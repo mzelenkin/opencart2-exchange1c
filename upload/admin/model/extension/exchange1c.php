@@ -4562,19 +4562,19 @@ class ModelExtensionExchange1c extends Model {
 
  		$this->log("Добавлен производитель: '" . $data['name'] . "', manufacturer_id: " . $manufacturer_id, 2);
 
-		if (isset($this->TAB_FIELDS['manufacturer_description'])) {
+        if (isset($this->TAB_FIELDS['manufacturer_description'])) {
 
-			// SEO
-			$this->seoGenerateManufacturer($manufacturer_id, $data);
+            // SEO
+            $this->seoGenerateManufacturer($manufacturer_id, $data);
 
-			if (!isset($this->FIELDS['manufacturer_description']['name'])) {
-				unset($data['name']);
-			}
+            if (!isset($this->FIELDS['manufacturer_description']['name'])) {
+                unset($data['name']);
+            }
 
-			$sql = $this->prepareQueryDescription($data, "set");
+            $sql = $this->prepareQueryDescription($data, "set");
 
-			$query = $this->query("INSERT INTO `" . DB_PREFIX . "manufacturer_description` SET " . $sql . ", `language_id` = " . $this->LANG_ID . ", `manufacturer_id` = " . (int)$manufacturer_id);
-		}
+            $query = $this->query("INSERT INTO `" . DB_PREFIX . "manufacturer_description` SET " . $sql . " `language_id` = " . $this->LANG_ID . ", `manufacturer_id` = " . (int)$manufacturer_id);
+        }
 
 		// СВЯЗЬ
 		if ($data['guid']) {
@@ -7357,10 +7357,19 @@ class ModelExtensionExchange1c extends Model {
 		// Счетчик
 		$counter = 0;
 
+        $config_store_name_field = $this->config->get('exchange1c_order_storename_field') ?: 'store_url';
+
 		$requisites['Дата отгрузки'] 				= $order['date'];
 		$requisites['Статус заказа'] 				= $this->getOrderStatusName($order['order_status_id']);
 		$requisites['Вид цен'] 						= $this->getPriceTypeName($order['customer_group_id']);
 		$requisites['Контрагент'] 					= $order['username'];
+
+		if(!empty($config_store_name_field) && $config_store_name_field !== 'do_not_use') {
+            if($config_store_name_field === 'domain')
+                $requisites['Источник заказа'] = parse_url($order['store_url'],  PHP_URL_HOST);
+            else
+                $requisites['Источник заказа'] = $order[$config_store_name_field];
+        }
 //		$requisites['Склад'] 						= $this->getWarehouseName($order['warehouse_id']);
 //		$requisites['Организация'] 					= 'Наша фирма';
 //		$requisites['Подразделение'] 				= 'Интернет-магазин';

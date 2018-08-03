@@ -803,6 +803,9 @@
 							<div class="form-group" id="order_status_export">
 								<?php echo $html_order_status_exported; ?>
 							</div>
+							<div class="form-group" id="order_storename_field">
+								<?php echo $html_order_storename_field; ?>
+							</div>
 							<div class="form-group">
 								<?php echo $html_order_reserve_product; ?>
 							</div>

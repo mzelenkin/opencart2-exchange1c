@@ -697,6 +697,14 @@ class ControllerExtensionModuleExchange1c extends Controller {
 			'brackets'			=> $this->language->get('text_text_in_brackets')
 		);
 
+		// Поля с источником заказа
+        $order_storename_fields = array(
+        	'do_not_use' => $this->language->get('text_do_not_use'),
+            'store_url' =>  $this->language->get('text_store_url'),
+            'domain' =>  $this->language->get('text_store_domain'),
+			'store_name' => $this->language->get('text_store_name'),
+		);
+
 		// Генерация опций
 		$params = array(
 			'username'									=> array('type' => 'input',)
@@ -764,6 +772,7 @@ class ControllerExtensionModuleExchange1c extends Controller {
 			,'orders_export_modify'						=> array('type' => 'radio')
 			,'order_modify_exchange'					=> array('type' => 'radio', 'default' => 1, 'width' => array(2,3,7))
 			,'order_status_export'						=> array('type' => 'select', 'options' => $order_statuses, 'width' => array(2,3,7))
+			,'order_storename_field'					=> array('type' => 'select', 'options' => $order_storename_fields, 'width' => array(2,3,7))
 			,'order_status_exported'					=> array('type' => 'select', 'options' => $order_statuses, 'width' => array(2,3,7))
 			,'order_notify_subject'						=> array('type' => 'input')
 			,'order_notify_text'						=> array('type' => 'textarea')
