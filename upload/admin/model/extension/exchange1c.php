@@ -4567,13 +4567,9 @@ class ModelExtensionExchange1c extends Model {
             // SEO
             $this->seoGenerateManufacturer($manufacturer_id, $data);
 
-            if (!isset($this->FIELDS['manufacturer_description']['name'])) {
-                unset($data['name']);
-            }
-
             $sql = $this->prepareQueryDescription($data, "set");
 
-            $query = $this->query("INSERT INTO `" . DB_PREFIX . "manufacturer_description` SET " . $sql . " `language_id` = " . $this->LANG_ID . ", `manufacturer_id` = " . (int)$manufacturer_id);
+            $query = $this->query("INSERT INTO `" . DB_PREFIX . "manufacturer_description` SET " . ($sql?$sql.',':'') . " `language_id` = " . $this->LANG_ID . ", `manufacturer_id` = " . (int)$manufacturer_id);
         }
 
 		// СВЯЗЬ
@@ -4602,7 +4598,6 @@ class ModelExtensionExchange1c extends Model {
 		if (empty($this->MANUFACTURERS)) {
 			$this->MANUFACTURERS = $this->getManufacturers();
 		}
-		//$this->log($this->MANUFACTURERS, 2);
 
 		foreach ($this->MANUFACTURERS as $manufacturer_id => $manufacturer_data) {
 			if ($name == $manufacturer_data['name'] && !$guid) {
@@ -5139,22 +5134,25 @@ class ModelExtensionExchange1c extends Model {
 		$manufacturer_tag = $this->config->get('exchange1c_product_manufacturer_tag');
 
 		$name = "";
+        $guid = "";
 
 		// Читаем изготовителя, добавляем/обновляем его в базу
 		if ($product_xml->Изготовитель) {
 
 			$name = trim(htmlspecialchars((string)$product_xml->Изготовитель->Наименование));
+			$guid = trim($product_xml->Изготовитель->Ид);
 
 		} elseif ($product_xml->$manufacturer_tag) {
 
         	$name = trim(htmlspecialchars((string)$product_xml->$manufacturer_tag->Наименование));
+            $guid = trim($product_xml->Изготовитель->Ид);
 
 		} else {
 
 			return 0;
 		}
 
-		$manufacturer_id = $this->setManufacturer($name);
+		$manufacturer_id = $this->setManufacturer($name, $guid);
 
        	return $manufacturer_id;
 
@@ -6291,6 +6289,7 @@ class ModelExtensionExchange1c extends Model {
 	 * Загружает все цены
 	 */
 	private function parsePrice($xml, $data) {
+        $rate = 0;
 
 		if (!$this->PRICE_TYPES) {
 			// Читаем типы цен из настроек
