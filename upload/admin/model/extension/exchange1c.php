@@ -7428,9 +7428,9 @@ class ModelExtensionExchange1c extends Model {
 			$order['company_inn'] = $query->row['company_inn'];
 			$order['company_kpp'] = $query->row['company_kpp'];
 		} else {
-			$order['firstname'] = "";
-			$order['lastname'] = "";
-			$order['middlename'] = "";
+			$order['firstname'] = isset($order['firstname'] ) ? $order['firstname'] : "";
+			$order['lastname'] = isset($order['lastname']) ? $order['lastname'] : "";
+			$order['middlename'] = isset($order['middlename'])?$order['middlename']:"";
 			$order['company'] = "";
 			$order['company_inn'] = "";
 			$order['company_kpp'] = "";
@@ -9129,9 +9129,12 @@ class ModelExtensionExchange1c extends Model {
 
 			$this->STAT['xml_load'] = microtime(true);
 			$xml = @simplexml_load_file($importFile);
+
 			$this->logStat('xml_load');
 			if (!$xml) {
-				$this->errorLog(3000, implode("\n", libxml_get_errors()));
+			    $errors = libxml_get_errors();
+			    $messages = array_reduce($errors, function($carry, $item){ return ($carry?"\n$carry":'').$item->message;});
+				$this->errorLog(3000, $messages);
 				return $this->error();
 			}
 
@@ -9195,7 +9198,6 @@ class ModelExtensionExchange1c extends Model {
 		return "";
 
 	} // importFile()
-
 
 	/**
 	 * ver 2
