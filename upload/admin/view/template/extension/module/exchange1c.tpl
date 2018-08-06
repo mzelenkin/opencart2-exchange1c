@@ -1080,6 +1080,14 @@
 					<!-- ОБНОВЛЕНИЯ -->
 					<div class="tab-pane" id="tab-updates">
 						<fieldset>
+							<legend>1.6.4.1-lk от 03.08.2018</legend>
+							<div class="form-group">
+								<ul>
+									<li>Добавлена выгрузка реквизита "Источник заказа"</li>
+									<li>Исправлена загрузка производителей (создавались дубликаты)</li>
+									<li>Исправлены некоторые ошибки логики приводившие в ошибкам загрузки/выгрузки</li>
+								</ul>
+							</div>
 							<legend>1.6.4.1 от 10.03.2018</legend>
 							<div class="form-group">
 								<ul>
@@ -1108,8 +1116,10 @@
 		</div><!-- panel panel-default -->
 	</div><!-- container-fluid  -->
 	<div style="text-align:center; opacity: .5">
-		<p>Version <?php echo $version; ?> | <a href=https://github.com/KirilLoveVE/opencart2-exchange1c><?php echo $lang['text_source_code']; ?></a><br />
-		<?php echo $lang['text_change']; ?></p>
+		<p>Version <?php echo $version; ?> | <a href=https://github.com/mzelenkin/opencart2-exchange1c><?php echo $lang['text_source_code']; ?></a><br />
+		<?php echo $lang['text_change']; ?><br/>
+		<?php echo $lang['text_change_mz']; ?>
+		</p>
 	</div>
 </div><!-- content -->
 
