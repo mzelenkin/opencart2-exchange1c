@@ -7475,13 +7475,15 @@ class ModelExtensionExchange1c extends Model {
 			'АдресРегистрации'		=> $this->setCustomerAddress($order)
 		);
 
+        // Нужно для 1С КА
+        $customer['Контакты']					= $this->setCustomerContacts($order);
+
 		// Поля для юр. лица или физ. лица
 		if ($order['company']) {
  			// Если плательщиком является организация
 			// Контактное лицо организации (физ. лицо)
 			$customer['Адрес']						= $this->setCustomerAddress($order);
 			$customer['ЮридическийАдрес']			= $this->setCustomerAddress($order);
-			$customer['Контакты']					= $this->setCustomerContacts($order);
 
 //			$customer['Представители']				= array(
 //				'Представитель' => array(
