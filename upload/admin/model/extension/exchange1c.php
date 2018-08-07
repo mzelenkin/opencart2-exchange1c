@@ -7603,7 +7603,7 @@ class ModelExtensionExchange1c extends Model {
 				// Шапка документа
 				$document['Документ' . $document_counter] = array(
 					 'Ид'          => $order['order_id']
-					,'Номер'       => $order['order_id']
+					,'Номер'       => $this->orderToDocumentNum($order)
 					,'Дата'        => $order['date']
 					,'Время'       => $order['time']
 					,'Валюта'      => $currency
@@ -7726,6 +7726,33 @@ class ModelExtensionExchange1c extends Model {
 
 	} // queryOrders()
 
+
+    /**
+     * Создает ID документа для 1С.
+     * Этот метод появился здесь из-за того что в 1с могут приходить заказы с разных сайтов
+     * @param $order
+     * @return string
+     */
+    private function orderToDocumentNum($order)
+    {
+        $domain = parse_url($order['store_url'],  PHP_URL_HOST);
+        $order_id = $order['order_id'];
+
+        return "{$domain}#{$order_id}";
+    }
+
+    /**
+     * Извлекает order_id из ID документа
+     * @param $documentId
+     * @return int ID документа в БД
+     */
+    private function documentNumToOrderId($documentId)
+    {
+        $parts = explode('#', $documentId);
+        $order_id = $parts[1];
+
+        return $order_id;
+    }
 
 	/**
 	 * Возвращает курс валюты
@@ -9001,8 +9028,9 @@ class ModelExtensionExchange1c extends Model {
 	 */
 	private function parseDocument($xml) {
 
-		$order_guid		= (string)$xml->Ид;
-		$order_id		= (string)$xml->Номер;
+		$order_guid		 = (string)$xml->Ид;
+		$document_number = (string)$xml->Номер;
+        $order_id = $this->documentNumToOrderId($document_number);
 
 		$this->log($xml, 2);
 
