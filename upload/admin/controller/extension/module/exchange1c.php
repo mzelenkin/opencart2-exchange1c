@@ -2711,11 +2711,11 @@ class ControllerExtensionModuleExchange1c extends Controller {
 			)
 		);
 		if ($this->config->get('exchange1c_convert_orders_cp1251') == 1) {
-			//echo header('Content-Type: text/html; charset=windows-1251', true);
+			echo header('Content-Type: text/html; charset=windows-1251', true);
 			// посоветовал yuriygr с GitHub
-			//echo iconv('utf-8', 'cp1251', $orders);
-			//echo iconv('utf-8', 'cp1251//TRANSLIT', $orders);
-			echo mb_convert_encoding($orders, 'UTF-8', mb_detect_encoding($orders, "UTF-8, Windows-1251, Windows-1252", true));
+			echo iconv('utf-8', 'cp1251', $orders);
+			echo iconv('utf-8', 'cp1251//TRANSLIT', $orders);
+			//echo mb_convert_encoding($orders, 'UTF-8', mb_detect_encoding($orders, "UTF-8, Windows-1251, Windows-1252", true));
 			//echo mb_convert_encoding($orders, 'cp1251//TRANSLIT', 'utf-8');
 		} else {
 			echo $orders;

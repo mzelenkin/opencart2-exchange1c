@@ -5428,7 +5428,9 @@ class ModelExtensionExchange1c extends Model {
 			$this->setProductName($product, $data);
 
 			// КАТЕГОРИИ
-			if ($product->Группы) {
+            /* @todo Вынести в отдельную настройку
+             */
+			if ($product->Группы && $this->config->get('exchange1c_categories_no_import') != 1) {
 				// Если надо обновлять категории товара
 				$data['categories']	= $this->parseProductCategories($product->Группы);
 				if (empty($data['categories'])) {
